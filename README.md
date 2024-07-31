@@ -190,10 +190,11 @@ class Voto(db.Model):
 class VotoSchema(ma.Schema):
     class Meta:
         fields = ('id_voto', 'id_elector', 'id_lista_candidato')
-Estilo Error/Exception Handling
+```
+
+## Estilo Error/Exception Handling
 Descripción: Gestión adecuada de errores y excepciones.
 Fragmento de Código:
-```
 
 ```python
 Copiar código
@@ -208,7 +209,7 @@ class EleccionServicioImpl(IEleccionServicio):
             raise e
 ```
 
-##Estilo Restful
+## Estilo Restful
 Descripción: Creación de servicios RESTful.
 Fragmento de Código:
 
