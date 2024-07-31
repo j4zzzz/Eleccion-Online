@@ -139,15 +139,46 @@ Fragmento de Código:
 
 ```python
 Copiar código
-class EleccionServicioImpl(IEleccionServicio):
-    def get_all_eleccion(self):
+class VotoServicioImpl(IVotoServicio):
+        
+    def get_voto_by_elector(self, id_elector):
         try:
-            all_eleccion = Eleccion.query.all()
-            result = eleccion_schemas.dump(all_eleccion)
+            voto = db.session.query(Elector.nombres).join(Voto, Elector.id == Voto.id_elector).filter(Elector.id == id_elector).all()
+            result = [{"nombre": tupla[0]} for tupla in voto]
             return result
         except Exception as e:
-            logger.error(f'Error al obtener todas las elecciones: {str(e)}')
+            logger.error(f'Error al obtener el voto del elector: {str(e)}')
             raise e
+    def votar(self, id_lista, id_elector):
+        try:
+            voto = Voto(id_elector, id_lista)
+            db.session.add(voto)
+            db.session.commit()
+            logger.info(f'Voto registrado correctamente: {voto}')
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f'Error al registrar el voto: {str(e)}')
+            raise e
+    def get_all_votos(self):
+        votos = db.session.query(
+            Elector.nombres,
+            Elector.apellido_paterno,
+            Elector.apellido_materno,
+            ListaCandidato.nombre
+        ).join(
+            Voto, Elector.id == Voto.id_elector
+        ).join(
+            ListaCandidato, ListaCandidato.id_lista == Voto.id_lista
+        ).all()
+        
+        result = [
+            {
+                "nombre_completo": f"{tupla[0]} {tupla[1]} {tupla[2]}",
+                "nombre_lista": tupla[3]
+            }
+            for tupla in votos
+        ]
+        return result
 ```
 
 ## 3. Estilo Restful
