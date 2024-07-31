@@ -166,7 +166,6 @@ def get_elecciones():
         return jsonify({'error': str(e)}), 500
 ```
 
-markdown
 Copiar código
 ## Estilos de Programación Utilizados
 
