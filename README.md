@@ -139,6 +139,19 @@ Fragmento de Código:
 
 ```python
 Copiar código
+class EleccionServicioImpl(IEleccionServicio):
+    def get_all_eleccion(self):
+        try:
+            all_eleccion = Eleccion.query.all()
+            result = eleccion_schemas.dump(all_eleccion)
+            return result
+        except Exception as e:
+            logger.error(f'Error al obtener todas las elecciones: {str(e)}')
+            raise e
+```
+
+```python
+Copiar código
 class VotoServicioImpl(IVotoServicio):
         
     def get_voto_by_elector(self, id_elector):
@@ -180,6 +193,7 @@ class VotoServicioImpl(IVotoServicio):
         ]
         return result
 ```
+
 
 ## 3. Estilo Restful
 Este estilo implica la creación de servicios RESTful para permitir la interacción con el sistema a través de HTTP, siguiendo los principios de REST.
